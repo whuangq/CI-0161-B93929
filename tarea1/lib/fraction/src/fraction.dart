@@ -2,26 +2,24 @@ library utils;
 import 'dart:math' as math;
 
 class Fraction {
-  late BigInt numerator;
-  late BigInt denominator;
+  late int numerator;
+  late int denominator;
   int precision = 3;
 
 //-------- CONSTRUCTORES --------//
 
-  Fraction(int n, int d) {
-    if (d == 0) {
+  Fraction(this.numerator, this.denominator) {
+    if (denominator == 0) {
       throw ArgumentError("The denominator cannot be zero.");
     }
-    numerator = BigInt.from(n);
-    denominator = BigInt.from(d);
     simplify();
   } 
 
   Fraction.fromDouble(double value) {
     final parts = value.toString().split('.');
     final decimals = parts.length > 1 ? parts[1] : '';
-    final BigInt multiplier = BigInt.from(math.pow(10, decimals.length));
-    numerator = (BigInt.from(value) * multiplier);
+    final multiplier = math.pow(10, decimals.length).toInt();
+    numerator = (value * multiplier).toInt();
     denominator = multiplier;
     simplify();
   }
@@ -29,10 +27,10 @@ class Fraction {
   Fraction.fromString(String value) {
     final parts = value.split('/');
     if (parts.length != 2) {
-      throw FormatException('String does not represent a valid fraction: $value');
+      throw FormatException('String does not contain the correct format for a fraction');
     }
-    numerator = BigInt.parse(parts[0]);
-    denominator = BigInt.parse(parts[1]);
+    numerator = int.parse(parts[0]);
+    denominator = int.parse(parts[1]);
     if (denominator == 0) {
       throw ArgumentError("Denominator cannot be zero");
     }
@@ -51,17 +49,9 @@ class Fraction {
     simplify();
   }
 
-  Fraction.fromBigInt(BigInt num, BigInt den) {
-    numerator = num;
-    denominator = den;
-    if (denominator == 0) {
-      throw ArgumentError("Denominator cannot be zero");
-    }
-    simplify();
-  }
 //-------- FUNCIONES ADICIONALES --------//
   // funcion para encontrar maximo comun divisor
-  BigInt gcd(BigInt a, BigInt b) {
+  int gcd(int a, int b) {
     while (b != 0) {
       final t = b;
       b = a % b;
@@ -81,29 +71,43 @@ class Fraction {
     return "[$numerator/$denominator]";
   }
 
+//-------- FUNCIONES DE CONVERSION --------//
+
+  num toNum(){ 
+    return double.parse((numerator/denominator).toStringAsFixed(precision));
+  }
+
+  int toInt() {
+    return numerator~/denominator;
+  }
+
+  void setPrecision(int n) {
+    precision = n;
+  }
+
 //-------- OVERRIDE DE OPERADORES --------//
 
   Fraction operator +(Fraction b) {
     final denominador = denominator * b.denominator;
     final nuevoNum = (numerator * b.denominator) + (b.numerator * denominator);
-    return Fraction.fromBigInt(nuevoNum, denominador);
+    return Fraction(nuevoNum, denominador);
   }
 
   Fraction operator -(Fraction b) {
     final denominador = denominator * b.denominator;
     final nuevoNum = (numerator * b.denominator) - (b.numerator * denominator);
-    return Fraction.fromBigInt(nuevoNum, denominador);
+    return Fraction(nuevoNum, denominador);
   }
 
   Fraction operator *(Fraction b) {
-    return Fraction.fromBigInt(numerator * b.numerator, denominator * b.denominator);
+    return Fraction(numerator * b.numerator, denominator * b.denominator);
   }
 
   Fraction operator /(Fraction b) {
     if (b.numerator == 0) {
       throw Exception("Cannot divide by zero.");
     }
-    return Fraction.fromBigInt(numerator * b.denominator, denominator * b.numerator);
+    return Fraction(numerator * b.denominator, denominator * b.numerator);
   }
 
   bool operator <(Fraction b) {
@@ -126,6 +130,33 @@ class Fraction {
 
   bool operator >(Fraction b) {
     return numerator * b.denominator > b.numerator * denominator;
+  }
+
+//-------- POW, PROPER, IMPROPER, WHOLE --------//
+
+  /// exponential function
+  Fraction power(int exponent) {
+    if (exponent < 0) {
+      return Fraction(math.pow(denominator,-exponent).toInt(), math.pow(numerator,-exponent).toInt());
+    } else if (exponent == 0) {
+      return Fraction(1, 1);
+    } else {
+      return Fraction(math.pow(numerator, exponent).toInt(), math.pow(denominator,exponent).toInt());
+    }
+  }
+
+  // proper: numerator is bigger than denominator
+  bool isProper () {
+    return numerator.abs() < denominator ? true : false;
+  } 
+
+  // improper: denominator is bigger than numerator
+   bool isImproper () {
+    return !isProper();
+  } 
+
+  bool isWhole() {
+    return numerator % denominator == 0;
   }
 
 }
