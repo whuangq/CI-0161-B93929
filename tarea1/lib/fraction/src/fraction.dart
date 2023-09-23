@@ -4,7 +4,7 @@ import 'dart:math' as math;
 class Fraction {
   late int numerator;
   late int denominator;
-  int precision = 3;
+  int precision = 10;
 
 //-------- CONSTRUCTORES --------//
 
@@ -26,11 +26,28 @@ class Fraction {
 
   Fraction.fromString(String value) {
     final parts = value.split('/');
-    if (parts.length != 2) {
+    if (parts.length < 1 || 3 <= parts.length) {
       throw FormatException('String does not contain the correct format for a fraction');
     }
     numerator = int.parse(parts[0]);
-    denominator = int.parse(parts[1]);
+    if (parts.length == 2) {
+      if (parts[0].contains('.')) {
+        Fraction tempNum = convertDouble(parts[0]);
+        Fraction tempDen;
+        if (parts[1].contains('.')) {
+          tempDen = convertDouble(parts[1]);
+        } else {
+          tempDen = Fraction.fromString(parts[1]);
+        }
+        Fraction temp = tempNum / tempDen;
+        numerator = temp.numerator;
+        denominator = temp.denominator;
+      } else {
+        numerator = int.parse(parts[0]);
+      }
+    } else {
+      denominator = 1;
+    }
     if (denominator == 0) {
       throw ArgumentError("Denominator cannot be zero");
     }
@@ -83,6 +100,16 @@ class Fraction {
 
   void setPrecision(int n) {
     precision = n;
+  }
+
+  Fraction convertDouble(String value) {
+    int n,d;
+    final parts = value.toString().split('.');
+    final decimals = parts.length > 1 ? parts[1] : '';
+    final multiplier = math.pow(10, decimals.length).toInt();
+    n = (num.parse(value) * multiplier).toInt();
+    d = multiplier;
+    return Fraction(n,d);
   }
 
 //-------- OVERRIDE DE OPERADORES --------//

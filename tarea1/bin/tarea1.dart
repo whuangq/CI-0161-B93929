@@ -1,23 +1,7 @@
-import 'package:tarea1/fraction/fraction.dart';
-void main(List<String> arguments) {
- // Ejemplos de uso
-  final fraction1 = Fraction(5, 10);
-  final fraction12 = Fraction(5, 10);
-  print(fraction1==fraction12); // Output: 1/2
-
-  final fraction2 = Fraction.fromJson({'numerator': 3, 'denominator': 9});
-  print(fraction2.toString()); // Output: 1/3
-  print(fraction2.toNum());
-  fraction2.setPrecision(9);
-  print(fraction2.toNum());
-  print(fraction2.isProper());
-  print(fraction2.isImproper());
-
-  final fraction3 = Fraction.fromString("4/8");
-  print(fraction3.toString()); // Output: 1/2
-
-  final fraction4 = Fraction.fromDouble(0.75);
-  print(fraction4.toString()); // Output: 3/4
-  print(fraction4.toNum());
-
+import 'package:tarea1/expression_parser.dart';
+//import 'package:tarea1/fraction/fraction.dart';
+void main() {
+  String expression = "2*3+[1/6]*6+1+[1/6]*6";
+  num result = evaluateMathExpression(expression);
+  print("Result: $result");
 }
