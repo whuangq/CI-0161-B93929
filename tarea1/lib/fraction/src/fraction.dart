@@ -26,10 +26,6 @@ class Fraction {
 
   Fraction.fromString(String value) {
     final parts = value.split('/');
-    if (parts.length < 1 || 3 <= parts.length) {
-      throw FormatException('String does not contain the correct format for a fraction');
-    }
-    numerator = int.parse(parts[0]);
     if (parts.length == 2) {
       if (parts[0].contains('.')) {
         Fraction tempNum = convertDouble(parts[0]);
@@ -37,17 +33,23 @@ class Fraction {
         if (parts[1].contains('.')) {
           tempDen = convertDouble(parts[1]);
         } else {
-          tempDen = Fraction.fromString(parts[1]);
+          tempDen = Fraction(int.parse(parts[1]),1);
         }
         Fraction temp = tempNum / tempDen;
         numerator = temp.numerator;
         denominator = temp.denominator;
       } else {
         numerator = int.parse(parts[0]);
+        denominator = int.parse(parts[1]);
       }
-    } else {
+    } else if (parts.length == 1){
+      numerator = int.parse(parts[0]);
       denominator = 1;
     }
+    else {
+      throw FormatException('String does not contain the correct format for a fraction');
+    }
+    
     if (denominator == 0) {
       throw ArgumentError("Denominator cannot be zero");
     }

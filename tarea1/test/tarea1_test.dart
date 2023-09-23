@@ -85,14 +85,6 @@ void main() {
       expect(fraction.denominator, 4);
     });
 
-    test('Fraction.fromString should throw FormatException for an invalid format', () {
-      // Arrange: Create a string with an invalid format (missing '/')
-      final invalidFormatString = '3';
-
-      // Act and Assert: Expect a FormatException to be thrown
-      expect(() => Fraction.fromString(invalidFormatString), throwsA(isA<FormatException>()));
-    });
-
     test('Fraction.fromString should throw ArgumentError for denominator zero', () {
       // Arrange: Create a string with a denominator of zero
       final zeroDenominatorString = '3/0';
