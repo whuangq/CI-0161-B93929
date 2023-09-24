@@ -39,7 +39,7 @@ void main() {
     });
 
     test('Mixed Operators with Parentheses', () {
-      expect(evaluateMathExpression("(7.2*2.5)/(4.0+0.8)"), equals(15.0));
+      expect(evaluateMathExpression("(7.2*2.5)/(4.0+0.8)"), equals(3.75));
     });
   });
 
@@ -59,7 +59,7 @@ void main() {
     });
 
     test('Mixed Operators with Parentheses', () {
-      expect(evaluateMathExpressionReturnFraction("([1/3]*2)/([1/4]+[1/8])"), equals(Fraction(16, 5)));
+      expect(evaluateMathExpressionReturnFraction("([1/3]*2)/([1/4]+[1/8])"), equals(Fraction(16, 9)));
     });
   });
 
@@ -75,11 +75,11 @@ void main() {
 
   group('Integers and Fractions (With Parentheses)', () {
     test('Mixed Integers and Fractions with Parentheses', () {
-      expect(evaluateMathExpression("(3+[1/4])*2"), equals(7.5));
+      expect(evaluateMathExpression("(3+[1/4])*2"), equals(6.5));
     });
 
     test('Mixed Integers and Fractions with Parentheses', () {
-      expect(evaluateMathExpression("5-([1/3]+2)"), equals(10/3));
+      expect(evaluateMathExpression("5-([1/3]+2)"), equals(2.6666666667));
     });
   });
 

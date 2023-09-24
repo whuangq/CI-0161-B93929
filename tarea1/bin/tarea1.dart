@@ -4,7 +4,7 @@ import 'package:tarea1/fraction/src/fraction.dart';
 void main() {
   Fraction f = Fraction.fromString("3.5");
   print("Result: $f");
-  String expression = "3.5*2.0";
+  String expression = "(7.2*2.5)/(4.0+0.8)";
   num result = evaluateMathExpression(expression);
   print("Result: $result");
 }
