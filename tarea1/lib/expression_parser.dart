@@ -18,29 +18,25 @@ List<String> tokenizeExpression(String expression) {
   for (int i = 0; i < expression.length; i++) {
     String char = expression[i];
 
-    if (char == '[') {
+    if (char == '[') { // starting fraction
       inFraction = true;
       currentToken += char;
-    } else if (char == ']') {
+    } else if (char == ']') { // end of fraction
       inFraction = false;
       currentToken += char;
       tokens.add(currentToken);
       currentToken = '';
-    }else if ((operators.contains(char) || char == '(' || char == ')') && inFraction != true) {
+    }else if ((operators.contains(char) || char == '(' || char == ')') && inFraction != true) { // character is operand or parenthesis
       if (currentToken.isNotEmpty) {
-        tokens.add(currentToken);
-        currentToken = '';
+        tokens.add(currentToken); // add the value as a token without operand
+        currentToken = ''; // reset token
       }
-      tokens.add(char);
+      tokens.add(char); // add the operand
       inFraction = false; // Reset the fraction flag when encountering operators or parentheses.
-    } else {
-      if (inFraction) {
+    } else { // char is a value
+      if (inFraction) { // value is part of a fraction
         currentToken += char;
-      } else {
-        if (currentToken.isNotEmpty) {
-          tokens.add(currentToken);
-          currentToken = '';
-        }
+      } else { // concatenate token
         currentToken += char;
         if (i < expression.length - 1 && operators.contains(expression[i + 1])) {
           // If the next character is an operator, add the current token immediately.
@@ -98,7 +94,7 @@ List<String> convertToRPN(List<String> tokens) {
 
 TreeNode buildExpressionTree(List<String> rpnTokens) {
   List<TreeNode> stack = [];
-
+  print("tokens: $rpnTokens");
   for (String token in rpnTokens) {
     if (!isOperator(token)) {
       // Check if the token is a fraction in square brackets
@@ -191,4 +187,11 @@ num evaluateMathExpression(String expression) {
   List<String> rpnTokens = convertToRPN(tokens);
   TreeNode root = buildExpressionTree(rpnTokens);
   return evaluateExpression(root).toNum();
+}
+
+Fraction evaluateMathExpressionReturnFraction(String expression) {
+  List<String> tokens = tokenizeExpression(expression);
+  List<String> rpnTokens = convertToRPN(tokens);
+  TreeNode root = buildExpressionTree(rpnTokens);
+  return evaluateExpression(root);
 }
