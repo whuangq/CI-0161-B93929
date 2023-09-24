@@ -24,8 +24,10 @@ class Fraction {
     simplify();
   }
 
+/*
   Fraction.fromString(String value) {
     final parts = value.split('/');
+    numerator = num.parse(parts[0]).toInt();
     if (parts.length == 2) {
       if (parts[0].contains('.')) {
         Fraction tempNum = convertDouble(parts[0]);
@@ -33,17 +35,15 @@ class Fraction {
         if (parts[1].contains('.')) {
           tempDen = convertDouble(parts[1]);
         } else {
-          tempDen = Fraction(int.parse(parts[1]),1);
+          tempDen = Fraction(num.parse(parts[1]).toInt(),1);
         }
         Fraction temp = tempNum / tempDen;
         numerator = temp.numerator;
         denominator = temp.denominator;
       } else {
-        numerator = int.parse(parts[0]);
-        denominator = int.parse(parts[1]);
+        numerator = num.parse(parts[0]).toInt();
       }
     } else if (parts.length == 1){
-      numerator = int.parse(parts[0]);
       denominator = 1;
     }
     else {
@@ -55,6 +55,55 @@ class Fraction {
     }
     simplify();
   }
+*/
+
+Fraction.fromString(String value) {
+    final parts = value.split('/');
+    if (parts.length == 2) {
+      Fraction tempNum;
+      Fraction tempDen;
+      // check if numerator is double
+      if (parts[0].contains('.')) {
+        // convert double to fraction
+        tempNum = convertDouble(parts[0]);
+      } else {
+        // convert int to fraction
+        tempNum = Fraction(num.parse(parts[0]).toInt(),1);
+      }
+      // check if denominator is double
+      if(parts[1].contains('.')) {
+        tempDen = convertDouble(parts[1]);
+      } else {
+        tempDen = Fraction(num.parse(parts[1]).toInt(),1);
+      }
+      // assign values
+      Fraction temp = tempNum / tempDen;
+      numerator = temp.numerator;
+      denominator = temp.denominator;
+
+    } else if (parts.length == 1){
+      // check if value is double
+      if (parts[0].contains('.')) {
+        Fraction tempNum = convertDouble(parts[0]);
+        Fraction tempDen = Fraction(1, 1);
+        Fraction temp = tempNum / tempDen;
+        numerator = temp.numerator;
+        denominator = temp.denominator;
+      } else {
+        // value is an int
+        numerator = num.parse(parts[0]).toInt();
+        denominator = 1;
+      }
+    }
+    else {
+      throw FormatException('String does not contain the correct format for a fraction');
+    }
+    if (denominator == 0) {
+      throw ArgumentError("Denominator cannot be zero");
+    }
+    simplify();
+  }
+
 
   Fraction.fromJson(Map<String, dynamic> json) {
     if (!json.containsKey('numerator') || !json.containsKey('denominator')) {

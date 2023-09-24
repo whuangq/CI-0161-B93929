@@ -150,7 +150,7 @@ Fraction evaluateExpression(TreeNode? node) {
       value = value.substring(1, value.length - 1);
     }
     try{
-      print(value);
+      print("Expression: $value");
       fraction = Fraction.fromString(value);
       return fraction;
     } catch (e) {
