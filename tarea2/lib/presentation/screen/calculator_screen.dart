@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:calculator_app/expression_parser/src/expression_parser.dart';
 import 'package:calculator_app/fraction/src/fraction.dart';
@@ -154,7 +156,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
-                fontWeight: FontWeight.w400
+                fontWeight: FontWeight.w400,
+                fontFeatures: [FontFeature.fractions()]
               ),
             ),
           ),
