@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:calculator_app/expression_parser/src/expression_parser.dart';
+import 'package:calculator_app/fraction/src/fraction.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -14,65 +15,112 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   String smallScreen = '';
   String bigScreen = '0';
-
-  late Operations oper;
   bool finalized = false;
-  bool inParentheses = false;
-  bool inFraction = false;
-  
   num result = 0;
 
+  bool inParentheses(String input) {
+    int openParenthesesCount = 0;
+    for (int i = 0; i < input.length; i++) {
+      if (input[i] == '(') {
+        openParenthesesCount++;
+      } else if (input[i] == ')') {
+        openParenthesesCount--;
+      }
+    }
+    return openParenthesesCount != 0;
+  }
+  bool inFraction(String input) {
+    int openParenthesesCount = 0;
+    for (int i = 0; i < input.length; i++) {
+      if (input[i] == '[') {
+        openParenthesesCount++;
+      } else if (input[i] == ']') {
+        openParenthesesCount--;
+      }
+    }
+    return openParenthesesCount != 0;
+  }
+
+
+  num solve(String input) {
+    num res = 0;
+    
+    res = evaluateMathExpression(input);
+    return res;
+  }
+
+  bool fraction = false;
   void onPress(String text) {
     setState(() {
       if(finalized) {
         smallScreen = '';
-        bigScreen = '0';
+        bigScreen = '';
         finalized = false;
       }
+      fraction = inFraction(smallScreen);
       switch (text) {
         case 'AC':
           smallScreen = '';
-          bigScreen = '0';
+          bigScreen = '';
           break;
         case 'backspace':
-          if (bigScreen == '0') break;
-          if (bigScreen.length == 1) {
-            bigScreen = '0';
+          if (smallScreen.length <= 1) {
+            smallScreen = '';
           } else {
-            bigScreen = bigScreen.substring(0, bigScreen.length - 1);
+            smallScreen = smallScreen.substring(0, smallScreen.length - 1);
           }
           break;
         case '+':
-          smallScreen += '$bigScreen +';
-          bigScreen = '0';
+          if(fraction == false) {
+            smallScreen += '+';
+          }
           break;
         case '-':
-          smallScreen += '$bigScreen -';
-          bigScreen = '0';
+          if(fraction == false) {
+            smallScreen += '-';
+          }
           break;
         case '/':
-          smallScreen += '$bigScreen /';
-          bigScreen = '0';
+          smallScreen += '/';
           break;
         case '*':
-          smallScreen += '$bigScreen *';
-          bigScreen = '0';
+          if(fraction == false) {
+            smallScreen += '*';
+          }
           break;
         case '(':
-          smallScreen += '$bigScreen *';
-          bigScreen = '0';
+          if(fraction == false) {
+            if (inParentheses(smallScreen)) {
+              smallScreen += ')';
+            }
+            else {
+              smallScreen += '(';
+            }
+          }
+          break;
+        case '[':
+          if (inFraction(smallScreen)) {
+            smallScreen += ']';
+          }
+          else {
+            smallScreen += '[';
+          }
           break;
         case '=':
           // USING EXPRESSION TREE
-          smallScreen += bigScreen;
-          result = evaluateMathExpression(smallScreen);
+          if(inParentheses(smallScreen) || inFraction(smallScreen)){
+            bigScreen = 'ERROR';
+            finalized = true;
+            break;
+          }
+          result = solve(smallScreen);
           bigScreen = '$result';
           finalized = true;     
         default:
-          if (bigScreen == '0') {
-            bigScreen = text;
+          if (smallScreen == '') {
+            smallScreen = text;
           } else {
-            bigScreen = bigScreen + text;
+            smallScreen += text;
           }
       }
     });
@@ -84,13 +132,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('B 9 3 9 2 9',
+        title: const Text('W I L S O N   H U A N G',
           style: TextStyle(
             color: Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
-            decorationColor: Color.fromARGB(255, 255, 255, 255),
-            decoration: TextDecoration.underline,
           ),
         ),
         backgroundColor: Color.fromARGB(0, 0, 0, 64),
@@ -136,9 +182,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CalculatorBtn(
-                      text: "AC",
+                      text: "^",
                       backgroundColor: const Color.fromARGB(255, 255, 169, 64),
-                      onPressed: () => onPress("AC"),
+                      onPressed: () => onPress("^"),
                     ),
                     CalculatorBtn(
                       text: "(  )",
@@ -151,9 +197,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                        onPressed: () => onPress("[")
                     )
                     ,
-                    const CalculatorBtn(
+                    CalculatorBtn(
                       text: "/",
-                      backgroundColor: Color.fromARGB(255, 255, 169, 64),
+                      backgroundColor: const Color.fromARGB(255, 255, 169, 64),
+                      onPressed: () => onPress("/")
                     ),
                   ],
                 ),
@@ -177,7 +224,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       onPressed: () => onPress("9"),
                     ),
                     CalculatorBtn(
-                      text: "x",
+                      icon: Icons.close,
                       backgroundColor: const Color.fromARGB(255, 255, 169, 64),
                       onPressed: () => onPress("*"),
                     ),
@@ -203,7 +250,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       onPressed: () => onPress("6"),
                     ),
                     CalculatorBtn(
-                      text: "-",
+                      icon: Icons.remove,
                       backgroundColor: const Color.fromARGB(255, 255, 169, 64),
                       onPressed: () => onPress("-"),
                     ),
@@ -229,7 +276,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       onPressed: () => onPress("3"),
                     ),
                     CalculatorBtn(
-                      text: "+",
+                      icon: Icons.add,
                       backgroundColor: Color.fromARGB(255, 255, 169, 64),
                       onPressed: () => onPress("+"),
                     ),
@@ -253,6 +300,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       icon: Icons.backspace_rounded,
                       backgroundColor: Colors.white38,
                       onPressed: () => onPress("backspace"),
+                      onHold: ()=> onPress('AC'),
                     )
                     ,
                     CalculatorBtn(
@@ -277,12 +325,14 @@ class CalculatorBtn extends StatelessWidget {
   final String text;
   final Color backgroundColor;
   final VoidCallback? onPressed;
+  final VoidCallback? onHold;
 
   const CalculatorBtn({
     this.icon,
     this.text='',
     required this.backgroundColor,
     this.onPressed,
+    this.onHold,
     super.key,
   });
 
@@ -290,6 +340,7 @@ class CalculatorBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkResponse(
       onTap: onPressed,
+      onLongPress: onHold,
       radius: 20,
       child: Container(
         height: 80,

@@ -8,9 +8,8 @@ class TreeNode {
   TreeNode(this.value);
 }
 
-
 List<String> tokenizeExpression(String expression) {
-  List<String> operators = ['+', '-', '*', '/'];
+  List<String> operators = ['+', '-', '*', '/', '^']; // Include '^' as an operator
   List<String> tokens = [];
   String currentToken = '';
   bool inFraction = false;
@@ -26,7 +25,7 @@ List<String> tokenizeExpression(String expression) {
       currentToken += char;
       tokens.add(currentToken);
       currentToken = '';
-    }else if ((operators.contains(char) || char == '(' || char == ')') && inFraction != true) { // character is operand or parenthesis
+    } else if ((operators.contains(char) || char == '(' || char == ')') && inFraction != true) { // character is operand or parenthesis
       if (currentToken.isNotEmpty) {
         tokens.add(currentToken); // add the value as a token without operand
         currentToken = ''; // reset token
@@ -94,7 +93,6 @@ List<String> convertToRPN(List<String> tokens) {
 
 TreeNode buildExpressionTree(List<String> rpnTokens) {
   List<TreeNode> stack = [];
-  print("tokens: $rpnTokens");
   for (String token in rpnTokens) {
     if (!isOperator(token)) {
       // Check if the token is a fraction in square brackets
@@ -121,7 +119,7 @@ TreeNode buildExpressionTree(List<String> rpnTokens) {
 }
 
 bool isOperator(String token) {
-  return token == '+' || token == '-' || token == '*' || token == '/';
+  return token == '+' || token == '-' || token == '*' || token == '/' || token == '^'; // Include '^' as an operator
 }
 
 int getPrecedence(String operator) {
@@ -132,6 +130,8 @@ int getPrecedence(String operator) {
     case '*':
     case '/':
       return 2;
+    case '^':
+      return 3; // Assign higher precedence to '^'
     default:
       return 0;
   }
@@ -149,8 +149,7 @@ Fraction evaluateExpression(TreeNode? node) {
     if (value.startsWith('[') && value.endsWith(']')) {
       value = value.substring(1, value.length - 1);
     }
-    try{
-      print("Expression: $value");
+    try {
       fraction = Fraction.fromString(value);
       return fraction;
     } catch (e) {
@@ -163,20 +162,19 @@ Fraction evaluateExpression(TreeNode? node) {
 
   switch (node.value) {
     case "+":
-      print("$leftValue + $rightValue");
       return leftValue + rightValue;
     case "-":
-    print("$leftValue - $rightValue");
       return leftValue - rightValue;
     case "*":
-    print("$leftValue * $rightValue");
       return leftValue * rightValue;
     case "/":
-    print("$leftValue / $rightValue");
       if (rightValue.denominator == 0) {
         throw ArgumentError("Division by zero");
       }
       return leftValue / rightValue;
+    case "^":
+      // Use the provided pow function to calculate the exponentiation
+      return leftValue.power(rightValue.toInt());
     default:
       throw ArgumentError("Invalid operator: ${node.value}");
   }
