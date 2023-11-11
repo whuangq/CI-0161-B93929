@@ -7,6 +7,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/',
       builder: (contest,state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/add-professor',
+      builder: (contest,state) => const ProfessorAddModifyScreen(),
     )
   ]
 );

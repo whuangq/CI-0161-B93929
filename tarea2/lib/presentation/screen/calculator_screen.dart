@@ -43,6 +43,18 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return openParenthesesCount != 0;
   }
 
+String applyFractionFontFeature(String input) {
+  String output = input.replaceAllMapped(
+    RegExp(r'\[([^[]*)\]'), // Matches text inside square brackets
+    (Match match) {
+      String textInsideBrackets = match.group(1)!;
+      String formattedFraction = '1/3'; // Replace with your desired fraction format
+      return '[${FontFeature.fractions()}]$formattedFraction';
+    },
+  );
+
+  return output;
+}
 
   num solve(String input) {
     num res = 0;
@@ -55,7 +67,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   void onPress(String text) {
     setState(() {
       if(finalized) {
-        smallScreen = '';
+        smallScreen = 'hi test 1 12/23';
         bigScreen = '';
         finalized = false;
       }
@@ -107,6 +119,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           else {
             smallScreen += '[';
           }
+          smallScreen = applyFractionFontFeature(smallScreen);
           break;
         case '=':
           // USING EXPRESSION TREE
@@ -157,7 +170,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.w400,
-                fontFeatures: [FontFeature.fractions()]
               ),
             ),
           ),

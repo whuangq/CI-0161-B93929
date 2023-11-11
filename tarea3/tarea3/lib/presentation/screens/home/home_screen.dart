@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tarea3/presentation/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _pageController,
           children: const [
           Center(child: Text('Cursos'),),
-          Center(child: Text('Profesores'),),
+          ProfessorsListView(),
           Center(child: Text('Estudiantes'),),
         ],
         onPageChanged: (value){
