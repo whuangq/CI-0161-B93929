@@ -11,6 +11,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.inputFormatters,
+    this.errorText,
   });
 
   final String? label;
@@ -20,6 +21,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? inputFormatters;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         label: (label!=null) ? Text(label!) : null,
         hintText: hintText,
+        errorText: errorText,
         prefixIcon: (icon != null) ? Icon(icon) : null,
         enabledBorder: border,
         focusedBorder: border.copyWith(
