@@ -85,7 +85,12 @@ class __ProfessorFormViewState extends State<_ProfessorFormView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FilledButton(
-              onPressed: (){},
+              onPressed: (){
+                bool isValid = _keyForm.currentState!.validate();
+                if (isValid){
+                  print('${_firstNameController.text} ${_lastNameController.text}');
+                }
+              },
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical : 12),
                 child: Row(
