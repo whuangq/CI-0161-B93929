@@ -1,7 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tarea3/domain/schemas/course.dart';
-import 'package:tarea3/domain/schemas/professor.dart';
+import 'package:tarea3/domain/schemas.dart';
 
 class IsarService {
   late Future<Isar> db;
@@ -27,4 +26,4 @@ class IsarService {
       await isar.professors.put(professor);
     });
   }
-}
+} 
