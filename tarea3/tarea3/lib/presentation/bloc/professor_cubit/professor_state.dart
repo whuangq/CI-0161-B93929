@@ -23,7 +23,7 @@ class ProfessorState extends Equatable {
   );
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [professors, firstName, lastName];
 }
 
 final class ProfessorInitial extends ProfessorState {}

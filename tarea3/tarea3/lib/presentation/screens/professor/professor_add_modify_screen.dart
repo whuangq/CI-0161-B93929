@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tarea3/domain/schemas.dart';
 import 'package:tarea3/presentation/blocs.dart';
 import 'package:tarea3/presentation/widgets/inputs/custom_text_form_field.dart';
@@ -118,6 +119,7 @@ class __ProfessorFormViewState extends State<_ProfessorFormView> {
                   ..lastName = _lastNameController.text;
                   context.read<ProfessorCubit>().addProfessor(professor);
                   _clearForm();
+                  context.pop();
                 }
               },
               child: const Padding(

@@ -45,14 +45,19 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
             itemBuilder: (context, index){
               return CustomCard(
                 title: '${professors[index].firstName}'
-                  '${professors[index].lastName}',
+                  ' ${professors[index].lastName}',
+                elevation: 2,
               );
             },
           ),
         ),
         FilledButton.icon(
           onPressed: (){
-            context.push('/add-professor');
+            context.push('/add-professor')
+              .then((_) => Future.delayed(
+                const Duration(milliseconds: 250),
+                () => context.read<ProfessorCubit>().getProfessors()
+              ));
           },
           icon: const Icon(Icons.add),
           label: const Text('Agregar profesor')
