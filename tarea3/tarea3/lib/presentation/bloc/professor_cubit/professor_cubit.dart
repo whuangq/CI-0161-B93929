@@ -13,4 +13,13 @@ class ProfessorCubit extends Cubit<ProfessorState> {
   Future<void> addProfessor(Professor professor) async {
     isarService.addProfessor(professor);
   }
+
+  Future<void> getProfessors() async {
+    List<Professor> professors = await isarService.getProfessors();
+    emit (
+      state.copyWith(
+        professors: professors
+      )
+    );
+  }
 }
