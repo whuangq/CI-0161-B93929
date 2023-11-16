@@ -22,4 +22,9 @@ class ProfessorCubit extends Cubit<ProfessorState> {
       )
     );
   }
+
+  Future<void> deleteProfessor(int id) async {
+    isarService.deleteProfessor(id);
+  }
+
 }
