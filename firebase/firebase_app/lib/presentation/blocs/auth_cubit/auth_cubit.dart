@@ -33,6 +33,34 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> signUpUser(String email, String password) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = FirebaseAuth.instance.currentUser!;
+      emit(
+        state.copyWith(
+          isAuth: true,
+          isLoading: false,
+          isCreatingAccount: false,
+          email: user.email,
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isAuth: false,
+          error: true,
+          errorMessage: e.code,
+        ),
+      );
+    }
+  }
+
   Future<void> signOutUser() async {
     await FirebaseAuth.instance.signOut();
     emit(const AuthState());
@@ -42,6 +70,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(
       state.copyWith(
         isCreatingAccount: true,
+        error: false,
+        errorMessage: ''
       )
     );
   }

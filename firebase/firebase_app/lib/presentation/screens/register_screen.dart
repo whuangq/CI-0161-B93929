@@ -11,6 +11,40 @@ class RegisterScreen extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  void signUp(BuildContext context, AuthCubit authCubit) async {
+    if (_confirmPasswordController.text == _passwordController.text) {
+      authCubit.signUpUser(
+        _emailController.text,
+        _passwordController.text
+      ).then((value) {
+        if (authCubit.state.error) {
+          showDialog(
+            context: context,
+            builder: (context){
+              String e = authCubit.state.errorMessage;
+              authCubit.isCreatingAccount();
+              authCubit.reset();
+              return AlertDialog(
+                title: Text(e),
+              );
+            }
+          );
+        } else {
+          context.go('/');
+        }
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (context){
+        authCubit.reset();
+        return const AlertDialog(
+          title: Text("Las contraseñas no coinciden"),
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -60,8 +94,7 @@ class RegisterScreen extends StatelessWidget {
               const SizedBox(height: 15,),
               CustomButton(
                 title: 'Crear cuenta',
-                onTap: () {
-                },
+                onTap: () => signUp(context, authCubit)
               ),
               const SizedBox(height: 25,),
 
