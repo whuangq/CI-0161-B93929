@@ -33,6 +33,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> signOutUser() async {
+    await FirebaseAuth.instance.signOut();
+    emit(const AuthState());
+  }
+
   void reset() {
     emit(const AuthState());
   }
