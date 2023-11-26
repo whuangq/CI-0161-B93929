@@ -4,40 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  void signIn(BuildContext context, AuthCubit authCubit) async {
-    authCubit.signInUser(
-      _emailController.text,
-      _passwordController.text
-    ).then((value) {
-      if (authCubit.state.error) {
-        showDialog(
-          context: context,
-          builder: (context){
-          String e = authCubit.state.errorMessage;
-          authCubit.reset();
-          return AlertDialog(title: Text(e),);
-        });
-      } else {
-        context.go('/');
-      }
-    }
-    );
-  }
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     final colors = Theme.of(context).colorScheme;
     final authCubit = context.watch<AuthCubit>();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ingresar'),
+        title: const Text('Registrar'),
       ),
       body: SingleChildScrollView(
         child: SafeArea(child: Center(
@@ -53,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Bienvenido de vuelta!',
+                    'Registrate ya!',
                     style: TextStyle(color: colors.secondary),
                   )
                 ],
@@ -71,9 +52,16 @@ class LoginScreen extends StatelessWidget {
                 obscureText: true,
               ),
               const SizedBox(height: 15,),
+              CustomTextField(
+                hintText: 'Confirmar contraseña',
+                controller: _confirmPasswordController,
+                obscureText: true,
+              ),
+              const SizedBox(height: 15,),
               CustomButton(
-                title: 'Ingresar',
-                onTap: () => signIn(context, authCubit),
+                title: 'Crear cuenta',
+                onTap: () {
+                },
               ),
               const SizedBox(height: 25,),
 
@@ -81,17 +69,17 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '¿No eres miembro?',
+                    '¿Ya eres miembro?',
                     style: TextStyle(color: colors.secondary),
                   ),
                   const SizedBox(width: 5,),
                   GestureDetector(
-                    onTap: (){
-                      authCubit.isCreatingAccount();
-                      context.go('/register');
+                    onTap: () {
+                      authCubit.reset();
+                      context.go('/login');
                     },
                     child: Text(
-                      ' Regístrate ya!',
+                      'Ingresa ya!',
                       style: TextStyle(
                         color: colors.primary,
                         fontWeight: FontWeight.bold

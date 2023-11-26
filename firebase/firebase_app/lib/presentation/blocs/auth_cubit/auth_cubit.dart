@@ -38,6 +38,14 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState());
   }
 
+  Future<void> isCreatingAccount() async {
+    emit(
+      state.copyWith(
+        isCreatingAccount: true,
+      )
+    );
+  }
+
   void reset() {
     emit(const AuthState());
   }

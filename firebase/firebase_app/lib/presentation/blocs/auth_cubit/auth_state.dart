@@ -7,10 +7,12 @@ class AuthState extends Equatable {
   final bool error;
   final String errorMessage;
   final String email;
+  final bool isCreatingAccount;
 
   const AuthState({
     this.isAuth = false,
     this.isLoading = false,
+    this.isCreatingAccount = false,
     this.error = false,
     this.errorMessage = '',
     this.email = '',
@@ -19,12 +21,14 @@ class AuthState extends Equatable {
   AuthState copyWith({
     bool? isAuth,
     bool? isLoading,
+    bool? isCreatingAccount,
     bool? error,
     String? errorMessage,
     String? email,
   }) => AuthState(
     isAuth: isAuth ?? this.isAuth,
     isLoading: isLoading ?? this.isLoading,
+    isCreatingAccount: isCreatingAccount ?? this.isCreatingAccount,
     error: error ?? this.error,
     errorMessage: errorMessage ?? this.errorMessage,
     email: email ?? this.email,
@@ -32,6 +36,6 @@ class AuthState extends Equatable {
   );
 
   @override
-  List<Object> get props => [isAuth, isLoading, error, errorMessage, email];
+  List<Object> get props => [isAuth, isLoading, isCreatingAccount, error, errorMessage, email];
 }
 
