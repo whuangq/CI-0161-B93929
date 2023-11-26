@@ -5,7 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({
+    super.key,
+  });
+
+  final _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +35,28 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 25,),
-              const Expanded(child: SizedBox()),
+              Expanded(
+                child: Column(
+                  children: [
+                    CustomPost(
+                      user: authCubit.state.email,
+                      message: "Hola, este es un mensaje de prueba",
+                    ),
+                    CustomPost(
+                      user: authCubit.state.email,
+                      message: "Hola, este es un mensaje de prueba",
+                    ),
+                  ],
+                )
+              ),
+              
               const SizedBox(height: 25,),
               Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: CustomTextField(
                       hintText: "Escribe un mensaje",
+                      controller: _messageController,
                     ),
                   ),
                   const SizedBox(width: 15,),
