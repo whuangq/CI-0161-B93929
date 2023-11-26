@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "595741849921",
+    "project_id": "authtutorial03-e5256",
+    "storage_bucket": "authtutorial03-e5256.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595741849921:android:e85928484b4c0e9f57c9c0",
+        "android_client_info": {
+          "package_name": "com.example.firebase_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNpJitB8b_VhevC8PpCx8xpplurc8YjnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

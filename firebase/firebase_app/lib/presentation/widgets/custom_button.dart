@@ -16,6 +16,7 @@ class CustomButton extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return GestureDetector(
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(17),
         decoration: BoxDecoration(

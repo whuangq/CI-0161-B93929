@@ -1,6 +1,8 @@
+import 'package:firebase_app/presentation/blocs/auth_cubit/auth_cubit.dart';
 import 'package:firebase_app/presentation/widgets.dart';
-import 'package:firebase_app/presentation/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -12,7 +14,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final colors = Theme.of(context).colorScheme;
-
+    final authCubit = context.watch<AuthCubit>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ingresar'),
@@ -51,7 +53,24 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 15,),
               CustomButton(
                 title: 'Ingresar',
-                onTap: () {},
+                onTap: () {
+                  authCubit.signInUser(
+                    _emailController.text,
+                    _passwordController.text
+                  ).then((value) {
+                    if (authCubit.state.error) {
+                      showDialog(
+                        context: context,
+                        builder: (context){
+                        String e = authCubit.state.errorMessage;
+                        authCubit.reset();
+                        return AlertDialog(title: Text(e),);
+                      });
+                    } else {
+                      context.go('/');
+                    }
+                  });
+                },
               ),
               const SizedBox(height: 25,),
 

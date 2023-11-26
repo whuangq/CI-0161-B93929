@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final appRouter = GoRouter(
   initialLocation: '/',
   redirect: (context, state) {
-    final isAuth = context.watch<AuthCubit>().state.isAuth;
+    final isAuth = context.read<AuthCubit>().state.isAuth;
     if (!isAuth){
       return '/login';
     } else {
