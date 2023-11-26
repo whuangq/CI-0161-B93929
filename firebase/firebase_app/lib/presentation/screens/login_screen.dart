@@ -30,6 +30,26 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  void signInGoogle(BuildContext context, AuthCubit authCubit) async {
+    authCubit.signInGoogleUser().then(
+      (value) {
+        if (authCubit.state.error) {
+          showDialog(
+            context: context,
+            builder: (context){
+              String e = authCubit.state.errorMessage;
+              authCubit.reset();
+              return AlertDialog(
+                title: Text(e),
+              );
+          });
+        } else {
+          context.go('/');
+        }
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -105,12 +125,12 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   CustomImageButton(
                     path: 'lib/assets/images/google.png',
-                    onTap: () => signIn(context, authCubit),
+                    onTap: () => signInGoogle(context, authCubit),
                   ),
                 ],
               ),
               const SizedBox(height: 50,),
-              
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
