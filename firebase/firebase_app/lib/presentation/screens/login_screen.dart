@@ -75,8 +75,42 @@ class LoginScreen extends StatelessWidget {
                 title: 'Ingresar',
                 onTap: () => signIn(context, authCubit),
               ),
-              const SizedBox(height: 25,),
+              const SizedBox(height: 50,),
 
+              Row(
+                children: [
+                  Expanded(
+                    child: Divider(
+                      color: colors.secondaryContainer,
+                      thickness: 0.5,
+                    ),
+                  ),
+                  const SizedBox(width: 20,),
+                  Text(
+                    'O ingresa con:',
+                    style: TextStyle(color: colors.secondary),
+                  ),
+                  const SizedBox(width: 20,),
+                  Expanded(
+                    child: Divider(
+                      color: colors.secondaryContainer,
+                      thickness: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomImageButton(
+                    path: 'lib/assets/images/google.png',
+                    onTap: () => signIn(context, authCubit),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50,),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
