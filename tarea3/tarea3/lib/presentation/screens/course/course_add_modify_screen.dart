@@ -187,8 +187,7 @@ class _CourseFormViewState extends State<_CourseFormView> {
                   if (isValid) {
                     Course course = Course()
                       ..code = _codeController.text
-                      ..name = _nameController.text
-                      ..professor.value = professors[professorSelected!];
+                      ..name = _nameController.text;
                     if (widget.id != null) course.id = widget.id;
                     courseCubit.addCourse(course);
                     _clearForm();
@@ -204,7 +203,10 @@ class _CourseFormViewState extends State<_CourseFormView> {
                           const Icon(Icons.save),
                           const SizedBox(width: 10),
                           Text((widget.id == null) ? 'Guardar' : 'Modificar')
-                        ])))
+                        ]
+                      )
+                )
+              )
           ]),
           const SizedBox(height: 15)
         ]));
