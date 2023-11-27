@@ -1,21 +1,35 @@
-import 'package:firebase_app/presentation/blocs/auth_cubit/auth_cubit.dart';
+import 'package:firebase_app/presentation/blocs.dart';
 import 'package:firebase_app/presentation/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({
     super.key,
   });
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final _messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<PostsCubit>().getPosts('user_posts');
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final authCubit = context.watch<AuthCubit>();
+    final postsCubit = context.watch<PostsCubit>();
+    final posts = context.watch<PostsCubit>().state.posts;
     final colors = Theme.of(context).colorScheme;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text("Pizarra de mensajes"),
@@ -36,17 +50,15 @@ class HomeScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 25,),
               Expanded(
-                child: Column(
-                  children: [
-                    CustomPost(
-                      user: authCubit.state.email,
-                      message: "Hola, este es un mensaje de prueba",
-                    ),
-                    CustomPost(
-                      user: authCubit.state.email,
-                      message: "Hola, este es un mensaje de prueba",
-                    ),
-                  ],
+                child: ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) {
+                    final post = posts[index];
+                    return CustomPost(
+                      user: post['user_email'],
+                      message: post['message'],
+                    );
+                  }
                 )
               ),
               
@@ -61,7 +73,17 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 15,),
                   IconButton.filled(
-                    onPressed: (){},
+                    onPressed: (){
+                      postsCubit.addPost(
+                        "user_posts",
+                        authCubit.state.email,
+                        _messageController.text
+                      );
+                      _messageController.clear();
+                      setState(() {
+                        
+                      });
+                    },
                     icon: const Icon(Icons.send_rounded)
                   )
                 ],
