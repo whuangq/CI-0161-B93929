@@ -1,6 +1,7 @@
+import 'package:firebase_app/presentation/widgets.dart';
 import 'package:flutter/material.dart';
 
-class CustomPost extends StatelessWidget {
+class CustomPost extends StatefulWidget {
 
   final String user;
   final String message;
@@ -10,6 +11,19 @@ class CustomPost extends StatelessWidget {
     required this.user,
     required this.message,
   });
+
+  @override
+  State<CustomPost> createState() => _CustomPostState();
+}
+
+class _CustomPostState extends State<CustomPost> {
+
+  bool isLiked = false;
+
+  void toggleLike() {
+    isLiked = !isLiked;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +53,30 @@ class CustomPost extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                user,
-                style: TextStyle(
-                  color: colors.primary.withAlpha(200)
-                ),  
-              ),
-              Text(
-                message,
-                style: TextStyle(
-                  color: colors.secondary
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.user,
+                  style: TextStyle(
+                    color: colors.primary.withAlpha(200)
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              )
-            ],
+                Text(
+                  widget.message,
+                  style: TextStyle(
+                    color: colors.secondary
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(width: 20),
+          CustomLikeButton(
+            onTap: () => toggleLike(),
+            isLiked: isLiked,
           ),
         ],
       ),
