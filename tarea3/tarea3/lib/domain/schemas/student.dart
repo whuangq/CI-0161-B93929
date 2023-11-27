@@ -1,13 +1,14 @@
 import 'package:isar/isar.dart';
 import 'course.dart';
 
-part 'professor.g.dart';
+part 'student.g.dart';
 
 @collection
-class Professor {
+class Student {
   Id? id = Isar.autoIncrement;
   String? firstName;
   String? lastName;
-  @Backlink(to: 'professor')
+  @Index(unique: true)
+  String? email;
   final courses = IsarLinks<Course>();
 }

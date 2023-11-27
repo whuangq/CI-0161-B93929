@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:tarea3/domain/schemas/professor.dart';
+import 'professor.dart';
+import 'student.dart';
 
 part 'course.g.dart';
 
@@ -7,8 +8,9 @@ part 'course.g.dart';
 class Course {
   Id? id = Isar.autoIncrement;
   @Index(unique: true)
-  
   String? code;
   String? name;
-  final professor = IsarLinks<Professor>();
+  final professor = IsarLink<Professor>();
+  @Backlink(to: 'courses')
+  final students = IsarLinks<Student>();
 }
