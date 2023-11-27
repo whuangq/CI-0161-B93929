@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
-  Stream<QuerySnapshot<Map<String, dynamic>>> getPosts(String collectionPath) async* {
-    yield* FirebaseFirestore.instance
+  Future<QuerySnapshot<Map<String, dynamic>>> getPosts(String collectionPath) async {
+    return FirebaseFirestore.instance
     .collection(collectionPath)
     .orderBy('timestamp', descending: true)
-    .snapshots();
+    .get();
   }
 
   Future<void> addPost(String collectionPath, String email, String message) async {

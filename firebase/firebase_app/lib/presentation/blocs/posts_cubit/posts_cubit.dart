@@ -16,7 +16,7 @@ class PostsCubit extends Cubit<PostsState> {
       )
     );
     List<Map<String, dynamic>> posts = [];
-    FirestoreService().getPosts(collectionPath).first
+    FirestoreService().getPosts(collectionPath)
     .then((value){
       for(var element in value.docs) {
         Map<String, dynamic> documentData = element.data();
