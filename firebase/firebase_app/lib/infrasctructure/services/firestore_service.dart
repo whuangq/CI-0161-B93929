@@ -14,8 +14,23 @@ class FirestoreService {
         'user_email': email,
         'message': message,
         'timestamp': Timestamp.now(),
+        'likes': [],
       }
     );
+  }
+
+  void likePost(String collectionPath, String id, String email, bool isLiked) {
+    DocumentReference postRef = FirebaseFirestore.instance
+    .collection(collectionPath).doc(id);
+    if (isLiked){
+      postRef.update({
+        'likes': FieldValue.arrayUnion([email]),
+      });
+    } else {
+      postRef.update({
+        'likes': FieldValue.arrayRemove([email]),
+      });
+    }
   }
 
   Future<void> clear() async {

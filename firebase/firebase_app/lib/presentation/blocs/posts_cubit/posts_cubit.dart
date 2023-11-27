@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_app/infrasctructure/services.dart';
 
+
 part 'posts_state.dart';
 
 class PostsCubit extends Cubit<PostsState> {
@@ -30,6 +31,11 @@ class PostsCubit extends Cubit<PostsState> {
   }
   Future<void> addPost(String collectionPath, String email, String message) async {
     await FirestoreService().addPost(collectionPath, email, message);
+    getPosts(collectionPath);
+  }
+  
+  void likePost(String collectionPath, String id, String email, bool isLiked) {
+    FirestoreService().likePost(collectionPath, id, email, isLiked);
     getPosts(collectionPath);
   }
 }
