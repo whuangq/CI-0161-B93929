@@ -11,7 +11,8 @@ class PostsCubit extends Cubit<PostsState> {
   void getPosts(String collectionPath) {
     emit(
       state.copyWith(
-        isLoading: true
+        isLoading: true,
+        posts: []
       )
     );
     List<Map<String, dynamic>> posts = [];

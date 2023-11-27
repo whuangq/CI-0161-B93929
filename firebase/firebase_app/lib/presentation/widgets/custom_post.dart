@@ -43,15 +43,16 @@ class _CustomPostState extends State<CustomPost> {
     PostsCubit postsCubit,
     String id,
   ) {
-    isLiked = !isLiked;
-    numberOfLikes = isLiked ? numberOfLikes + 1 : numberOfLikes - 1;
-    postsCubit.likePost(
-      widget.collectionPath,
-      widget.postId,
-      currentEmail,
-      isLiked,
+    setState(() {
+      isLiked = !isLiked;
+      numberOfLikes = isLiked ? numberOfLikes + 1 : numberOfLikes - 1;
+      postsCubit.likePost(
+        widget.collectionPath,
+        widget.postId,
+        currentEmail,
+        isLiked,
     );
-    setState(() {});
+    });
   }
 
   @override
@@ -105,7 +106,7 @@ class _CustomPostState extends State<CustomPost> {
           ),
           const SizedBox(width: 20),
           CustomLikeButton(
-            onTap: () => toggleLike(postsCubit),
+            onTap: () => toggleLike(postsCubit, widget.postId),
             isLiked: isLiked,
             numberOfLikes: numberOfLikes.toString(),
           ),
