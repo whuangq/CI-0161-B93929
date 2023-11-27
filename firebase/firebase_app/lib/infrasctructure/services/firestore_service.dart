@@ -17,4 +17,9 @@ class FirestoreService {
       }
     );
   }
+
+  Future<void> clear() async {
+    await FirebaseFirestore.instance.terminate();
+    await FirebaseFirestore.instance.clearPersistence();
+  }
 }

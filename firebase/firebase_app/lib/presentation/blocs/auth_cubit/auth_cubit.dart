@@ -91,6 +91,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signOutUser() async {
     await FirebaseAuth.instance.signOut();
+    await FirestoreService().clear();
     emit(const AuthState());
   }
 
