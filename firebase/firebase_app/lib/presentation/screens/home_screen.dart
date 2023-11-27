@@ -55,8 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     final post = posts[index];
                     return CustomPost(
-                      user: post['user_email'],
+                      user: post['email'],
                       message: post['message'],
+                      postId: post['id'],
+                      likes: List<String>.from(post['likes'] ?? []),
+                      collectionPath: 'user_posts',
                     );
                   }
                 )

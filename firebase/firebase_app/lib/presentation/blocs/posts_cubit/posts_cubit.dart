@@ -18,7 +18,9 @@ class PostsCubit extends Cubit<PostsState> {
     FirestoreService().getPosts(collectionPath).first
     .then((value){
       for(var element in value.docs) {
-        posts.add(element.data());
+        Map<String, dynamic> documentData = element.data();
+        documentData['id'] = element.id;
+        posts.add(documentData);
       }
     }).then((value){
       emit(

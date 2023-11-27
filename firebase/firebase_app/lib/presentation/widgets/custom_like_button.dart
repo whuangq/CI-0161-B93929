@@ -4,11 +4,13 @@ class CustomLikeButton extends StatelessWidget {
 
   final void Function()? onTap;
   final bool isLiked;
+  final String numberOfLikes;
 
   const CustomLikeButton({
     super.key,
     required this.onTap,
     required this.isLiked,
+    required this.numberOfLikes,
   });
 
   @override
@@ -24,7 +26,11 @@ class CustomLikeButton extends StatelessWidget {
             isLiked ? Icons.favorite : Icons.favorite_border,
             color: isLiked ? colors.primary : colors.secondaryContainer,
           ),
-        )
+        ),
+        const SizedBox(height: 3,),
+        Text(
+          numberOfLikes,
+        ),
       ],
     );
   }

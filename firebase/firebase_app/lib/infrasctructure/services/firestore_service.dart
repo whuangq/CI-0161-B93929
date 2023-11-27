@@ -11,7 +11,7 @@ class FirestoreService {
   Future<void> addPost(String collectionPath, String email, String message) async {
     await FirebaseFirestore.instance.collection(collectionPath).add(
       {
-        'user_email': email,
+        'email': email,
         'message': message,
         'timestamp': Timestamp.now(),
         'likes': [],
